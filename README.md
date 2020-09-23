@@ -4,7 +4,7 @@ Tokenizer will be a program in C (ANSI Standard) to break down a given string of
 
 ## Installation
 
-Download the .c file and testcases.txt (unavailable currently) and run using gcc in Command Prompt.
+Download the .c file and testcases.txt (unavailable currently) and run using [gcc](https://gcc.gnu.org/install/index.html) in Command Prompt.
 
 ## Usage
 

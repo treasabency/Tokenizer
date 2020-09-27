@@ -21,7 +21,7 @@ int main()
     printf("%s",test);
      
     //free dynamically allocated memory
-    free(test); // <-- Hey, dont forget.
+    free(test); 
     return 0;
 }
 

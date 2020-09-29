@@ -43,9 +43,15 @@ void splitStr (char* str) {
         }
     }
     for(i=0;i < count;i++) {
-	 	printf("word: %s\n", splitStrings[i]);
+	 if(isalpha(splitStrings[i][0])) {
+	 	printf("word: %s\n", splitStrings[i]);  }
+	 else if(isdigit(splitStrings[i][0])) {
+	 	printf("number: %s\n", splitStrings[i]);	
+		 }
+	 else {
+		 	printf("space");
+		 }
 }
 }
-
 
 

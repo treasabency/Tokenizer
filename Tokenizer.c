@@ -1,5 +1,6 @@
-//October 2, 2020
-//Tokenizer.c
+//Sagnik Mukherjee and Treasa Bency
+//October 4, 2020
+//tokenizer.c
 
 //include directives
 #include <stdio.h>
@@ -15,34 +16,57 @@ void tokenize (char* str);
 int main(int argc, char* argv[])
 {	
 	//*argv[0] contains the pointer for input
-    int limit = 30;
+    int limit = 50;
      
-    //allocate memory dynamically
-    argv[0] = (char*)malloc(limit*sizeof(char));
+    //allocate initial memory space
+    //sizeof(char) is just 1, add 1 for '\0'
+    argv[1] = (char*)malloc(limit*sizeof(char)+1);
     
     //error handling for malloc() call
-    if (argv[0] == NULL) 
+    if (argv[1] == NULL)
     {
         perror("Memory Allocation failed. Exiting...");
         exit(EXIT_FAILURE);
     } 
 
     //prompt and store input 
-    puts("Enter string: ");
-	scanf("%[^\n]", argv[0]);
+    printf("Enter string: ");
+	scanf("%[^\n]", argv[1]);
+
+	//new size for reallocation purposes
+    int new_size = strlen(argv[1]);
+
+    //realloc with space for null-terminator
+    char* copy = NULL;
+    copy = realloc(copy, sizeof(char)*new_size + 1);
+
+    //ensure that realloc to copy ptr was successful
+    if(copy == NULL) 
+    {
+        perror("Memory Allocation failed. Exiting...");
+        exit(EXIT_FAILURE);
+    } 
+    else
+    	strcpy(copy, argv[1]);
 
     //end early if string empty or purely whitespace
-    if(isEmpty(argv[0]) == 1)
+    if(isEmpty(copy) == 1)
     {
     	printf("Zero Tokens Present (Empty String)\n");
     	return 0;
     }
 
-    //split string and return found tokens
-    tokenize(argv[0]);    
+    //begin tokenizing process
+    else
+    {
+    	printf("Tokens Found:\n-------------\n");
+	    //split string and return found tokens
+	    tokenize(copy);
+	}    
 
     //free allocated memory
-    free(argv[0]); 
+    free(argv[1]); 
+    free(copy);
     return 0;
 }
 
@@ -571,9 +595,17 @@ void tokenize (char* str)
 			     	break;
 
 			    default :
+			    	printf("Unacceptable operator. Skipped.\n");
 			   		*str++;
 			}
 
+		}
+
+		//non-printable char, and is unrecognizable
+		else
+		{
+			printf("Illegal/unrecognizable token. Skipped.\n");
+			*str++;
 		}
 	}
 }

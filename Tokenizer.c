@@ -15,15 +15,21 @@ void tokenize (char* str);
 int main(int argc, char* argv[])
 {	
 	//*argv[0] contains the pointer for input
-    int limit; 
-    limit = 30;
+    int limit = 30;
      
     //allocate memory dynamically
     argv[0] = (char*)malloc(limit*sizeof(char));
     
+    //error handling for malloc() call
+    if (argv[0] == NULL) 
+    {
+        perror("Memory Allocation failed. Exiting...");
+        exit(EXIT_FAILURE);
+    } 
+
     //prompt and store input 
-    printf("Enter string: ");
-    gets(argv[0]);
+    puts("Enter string: ");
+	scanf("%[^\n]", argv[0]);
 
     //end early if string empty or purely whitespace
     if(isEmpty(argv[0]) == 1)
@@ -143,13 +149,70 @@ void tokenize (char* str)
 		//digit char(s)
 		else if(isdigit(*str)) 
 		{
-			printf("decimal integer: ");
-			while(isdigit(*str))
+			//floating point: decimal with '.' but 
+			//not at the end of token, optional 
+			//exponent term (a decimal type)
+			int index = 0; int isFloat = 0;
+			while((isdigit(str[index])
+				|| str[index] == '.')
+				&& isFloat != 1) 
 			{
-				printf("%c", *str);
-				*str++;
+				if(str[index] == '.')
+					if(isdigit(str[index + 1]))
+						isFloat = 1;
+				index++;
 			}
-			printf("\n");
+
+			if(isFloat)
+			{
+				printf("floating point: ");
+				while(isdigit(*str)
+					|| *str == '.'
+					|| *str == 'e'
+					|| *str == 'E'
+					|| *str == '+'
+					|| *str == '-')
+				{
+					printf("%c", *str);
+					*str++;
+
+					switch(*(str + 1))
+					{
+						case '.':
+							printf("%c", *str);
+							*str++;
+							break;
+						case 'e':
+							printf("%c", *str);
+							*str++;
+							break;
+						case 'E':
+							printf("%c", *str);
+							*str++;
+							break;
+						case '+':
+							printf("%c", *str);
+							*str++;
+							break;
+						case '-':
+							printf("%c", *str);
+							*str++;
+							break;
+					}
+				}
+				printf("\n");
+			}
+
+			else
+			{
+				printf("decimal integer: ");
+				while(isdigit(*str))
+				{
+					printf("%c", *str);
+					*str++;
+				}
+				printf("\n");
+			}
 		}
 
 		//C operators 

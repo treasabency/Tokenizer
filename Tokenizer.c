@@ -131,30 +131,16 @@ void tokenize (char* str)
 			printf("\n");
 		}
 
-		//octal integer: 0, followed by
-		//[0-7] char(s)
-		else if(*str == '0'
-			&& (*(str + 1) >= '0' && *(str + 1) <= '7')) 
-		{
-			printf("octal integer: ");
-			while(*str >= '0' && *str <= '7')
-			{
-				printf("%c", *str);
-				*str++;
-			}
-			printf("\n");
-		}
-
-		//decimal integer: digit char, followed by
-		//digit char(s)
+		//float, decimal, or octal token
 		else if(isdigit(*str)) 
 		{
-			//floating point: decimal with '.' but 
+			//floating point ("float"): decimal with '.' but 
 			//not at the end of token, optional 
 			//exponent term (a decimal type)
-			int index = 0; int isFloat = 0;
-			while((isdigit(str[index])
-				|| str[index] == '.')
+			int index = 0; 
+			int isFloat = 0; //acts as boolean
+			//"look-ahead" to check for float behavior
+			while((isdigit(str[index]) || str[index] == '.')
 				&& isFloat != 1) 
 			{
 				if(str[index] == '.')
@@ -203,15 +189,32 @@ void tokenize (char* str)
 				printf("\n");
 			}
 
-			else
+			else 
 			{
-				printf("decimal integer: ");
-				while(isdigit(*str))
+				//octal integer: 0, followed by
+				//[0-7] char(s)
+				if(*str == '0')
 				{
-					printf("%c", *str);
-					*str++;
+					printf("octal integer: ");
+					while(*str >= '0' && *str <= '7')
+					{
+						printf("%c", *str);
+						*str++;
+					}
+					printf("\n");
 				}
-				printf("\n");
+
+				//decimal, if not octal
+				else
+				{
+					printf("decimal integer: ");
+					while(isdigit(*str))
+					{
+						printf("%c", *str);
+						*str++;
+					}
+					printf("\n");
+				}
 			}
 		}
 

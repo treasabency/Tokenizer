@@ -1,0 +1,177 @@
+TEST 1 AS FOLLOWS: 
+()[].->sizeof,!~>><<^|++--+/||&&?:==!=<><=>= =+=-=*=/=%=>>=<<=&=^=|=&-*
+
+EXPECTED OUTPUT AS FOLLOWS:
+Tokens Found:
+-------------
+left parenthesis: (
+right parenthesis: )
+left bracket: [
+right bracket: ]
+structure member: .
+structure pointer: ->
+sizeof: sizeof
+comma: ,
+negate: !
+1s complement: ~
+shift right: >>
+shift left: <<
+bitwise XOR: ^
+bitwise OR: |
+increment: ++
+decrement: --
+addition: +
+division: /
+logical OR: ||
+logical AND: &&
+conditional true: ?
+conditional false: :
+equality test: ==
+inequality test: !=
+less than test: <
+greater than test: >
+less than or equal test: <=
+greater than or equal test: >=
+assignment: =
+plus equals: +=
+minus equals: -=
+times equals: *=
+divide equals: /=
+mod equals: %=
+shift right equals: >>=
+shift left equals: <<=
+bitwise AND equals: &=
+bitwise XOR equals: ^=
+bitwise OR equals: |=
+AND/address operator: &
+minus/subtract operator: -
+multiply/dereference operator: *
+
+TEST 2 AS FOLLOWS:
+0 07 09 079 07.9 07. 0.0 123.123 0123.123 6.02214e+23 2.99792458e8 8.33333e-2
+
+EXPECTED OUTPUT AS FOLLOWS:
+Tokens Found:
+-------------
+octal integer: 0
+octal integer: 07
+octal integer: 0
+decimal integer: 9
+octal integer: 07
+decimal integer: 9
+floating point: 07.9
+octal integer: 07
+structure member: .
+floating point: 0.0
+floating point: 123.123
+floating point: 0123.123
+floating point: 6.02214e+23
+floating point: 2.99792458e8
+floating point: 8.33333e-2
+
+TEST 3 AS FOLLOWS:
+tar czvf Asst0.tgz ./Asst0 || Hello, how are you? 	Today is going to be a great day! Keep your head up, alright?
+
+EXPECTED OUTPUT AS FOLLOWS:
+Tokens Found:
+-------------
+word: tar
+word: czvf
+word: Asst0
+structure member: .
+word: tgz
+structure member: .
+division: /
+word: Asst0
+logical OR: ||
+word: Hello
+comma: ,
+word: how
+word: are
+word: you
+conditional true: ?
+word: Today
+word: is
+word: going
+word: to
+word: be
+word: a
+word: great
+word: day
+negate: !
+word: Keep
+word: your
+word: head
+word: up
+comma: ,
+word: alright
+conditional true: ?
+
+TEST 4 AS FOLLOWS:
+0x3,0x4,0xA,0xB,0XAFZZ,0X0942AFDEC,-,+*,+!!,+23,+..!?+,.==.!!?!+===
+Tokens Found:
+-------------
+hexadecimal integer: 0x3
+comma: ,
+hexadecimal integer: 0x4
+comma: ,
+hexadecimal integer: 0xA
+comma: ,
+hexadecimal integer: 0xB
+comma: ,
+hexadecimal integer: 0XAF
+word: ZZ
+comma: ,
+hexadecimal integer: 0X0942AFDEC
+comma: ,
+minus/subtract operator: -
+comma: ,
+addition: +
+multiply/dereference operator: *
+comma: ,
+addition: +
+negate: !
+negate: !
+comma: ,
+addition: +
+decimal integer: 23
+comma: ,
+addition: +
+structure member: .
+structure member: .
+negate: !
+conditional true: ?
+addition: +
+comma: ,
+structure member: .
+equality test: ==
+structure member: .
+negate: !
+negate: !
+conditional true: ?
+negate: !
+plus equals: +=
+equality test: ==
+
+TEST 5 AS FOLLOWS: (empty string, user just pressed 'enter' key after being prompted for a newline)
+
+
+EXPECTED OUTPUT:
+Zero Tokens Present (Empty String)
+
+TEST 6 AS FOLLOWS: (three \t characters as whitespace)
+hello			hello 0.3141;;;52321!!!
+
+EXPECTED OUTPUT:
+Tokens Found:
+-------------
+word: hello
+word: hello
+floating point: 0.3141
+Unacceptable operator. Skipped.
+Unacceptable operator. Skipped.
+Unacceptable operator. Skipped.
+decimal integer: 52321
+negate: !
+negate: !
+negate: !

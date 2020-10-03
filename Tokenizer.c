@@ -1,3 +1,6 @@
+//October 2, 2020
+//Tokenizer.c
+
 //include directives
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,33 +12,31 @@ int isEmpty(char* str);
 void tokenize (char* str);
 
 //main driver function
-int main()
+int main(int argc, char* argv[])
 {	
-	//pointer for input
-    char* test;
-
+	//*argv[0] contains the pointer for input
     int limit; 
     limit = 30;
      
     //allocate memory dynamically
-    test = (char*)malloc(limit*sizeof(char));
+    argv[0] = (char*)malloc(limit*sizeof(char));
     
     //prompt and store input 
     printf("Enter string: ");
-    gets(test);
+    gets(argv[0]);
 
     //end early if string empty or purely whitespace
-    if(isEmpty(test) == 1)
+    if(isEmpty(argv[0]) == 1)
     {
     	printf("Zero Tokens Present (Empty String)\n");
     	return 0;
     }
 
     //split string and return found tokens
-    tokenize(test);    
+    tokenize(argv[0]);    
 
     //free allocated memory
-    free(test); 
+    free(argv[0]); 
     return 0;
 }
 
@@ -68,9 +69,13 @@ void tokenize (char* str)
     //until end of pointer reached
     while(*str)
     {
+    	//whitespace characters
+    	if(isspace(*str))
+    		*str++;
+
     	//word: alphabetic char, followed by 
     	//alphanumeric char(s)
-		if(isalpha(*str))
+		else if(isalpha(*str))
 		{
 			if(*str == 's'
 				&& *(str + 1) == 'i'
@@ -79,27 +84,39 @@ void tokenize (char* str)
 				&& *(str + 4) == 'o'
 				&& *(str + 5) == 'f')
 			{
-				printf("sizeof: sizeof\n");
-				*str += 6;
+				printf("sizeof: ");
+				for(int pos = 0; pos <= 5; pos++)
+				{
+					printf("%c", *str);
+					*str++;
+				}
+				printf("\n");
 			}
 
-			printf("word: ");
-			while(isalnum(*str))
+			else
 			{
-				printf("%c", *str);
-				*str++;
+				printf("word: ");
+				while(isalnum(*str))
+				{
+					printf("%c", *str);
+					*str++;
+				}
+				printf("\n");
 			}
-			printf("\n");
 		}
 
 		//hexadecimal integer: 0x or 0X, followed by
 		//[0-9][a-f][A-F] char(s)
-		else if(*str == '0' && *str == 'x'
-			|| *str == '0' && *str == 'X') 
+		else if((*str == '0' && *(str + 1) == 'x'
+			|| *str == '0' && *(str + 1) == 'X')
+			&& isxdigit(*(str + 2)))
 		{
 			printf("hexadecimal integer: ");
-			printf("%c", *str);
-			printf("%c", *str);
+			for(int pos = 0; pos <= 2; pos++)
+			{
+				printf("%c", *str);
+				*str++;
+			}
 			while(isxdigit(*str))
 			{
 				printf("%c", *str);
@@ -110,7 +127,8 @@ void tokenize (char* str)
 
 		//octal integer: 0, followed by
 		//[0-7] char(s)
-		else if(*str == '0') 
+		else if(*str == '0'
+			&& (*(str + 1) >= '0' && *(str + 1) <= '7')) 
 		{
 			printf("octal integer: ");
 			while(*str >= '0' && *str <= '7')
@@ -134,7 +152,8 @@ void tokenize (char* str)
 			printf("\n");
 		}
 
-		//C operators
+		//C operators 
+		//(or anything that can be printed)
 		else if(isprint(*str))
 		{
 			switch(*str) 
